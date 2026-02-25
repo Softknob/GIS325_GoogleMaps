@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+
+<html lang='en'>
+
+<head>
+    <title>
+        Ian's Super Duper Web Page
+    </title>
+    <style>
+        body {
+            background-image: url('images/headerbg.jpg');
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-size: cover;
+        }
+
+        .main {
+            color: white;
+            text-align: center;
+        }
+
+        #logo {
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            width: 200px;
+            transition: transform 0.50s ease-in;
+        }
+
+        #map {
+            height: 600px;
+            width: 1000px;
+            margin: auto;
+        }
+
+        #extra {
+            max-width: 980px;
+            margin: auto;
+            background: white;
+            padding: 10px;
+        }
+
+        #weatherFrame {
+            width: 500px;
+            height: 300px;
+
+        }
+    </style>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBeXGwBxI____zmpQHjYkKq8e9X-qRbvBI" async defer>
+    </script>
+</head>
+
+<body onload="initMap()">
+    <h1 class='main'>Paulson Cross Country Ski Trails</h1>
+    <p class='main'>The Castlegar Nordic Ski Club started in 1961 as the Sons of Norway Sports Club for members and
+        families of the Sons of Norway Nordic Lodge #76.
+        Skiing activities started out at Sheep Lake (now Nancy Greene Lake) where the club organized a picnic site and a
+        ski race start area and hand cleared trails around the lake.
+        Over the next few years the Club extended their trails from the Lake up into the Nordic basin (Gloryview trail)
+        and built the Sons of Norway shelter (now referred to as the Nordic Hut).
+        During this period a tracking machine was built by the B.C. Forest Service and stored at Kokanee Park.
+        The Castlegar Club made the most use of it with the local Snowmobile club donating time to do the tracking</p>
+    <div id="map"></div>
+    <br>
+    <div id="extra">
+        <img src="https://images.drivebc.ca/bchighwaycam/pub/cameras/174.jpg">
+        <iframe id="weatherFrame" src="https://images.drivebc.ca/bchighwaycam/pub/weather/33122.html"></iframe>
+    </div>
+    <p></p>
+
+    <img id="logo" src="images/CNSC_Logo.JPG" onclick="flip(this)">
+    <script>
+        function flip(logo) {
+            if (logo.src.match("CNSC_Logo.JPG")) {
+                logo.src = "images/CNSC_Logo1.JPG"
+            } else {
+                logo.src = "images/CNSC_Logo.JPG"
+            }
+        }
+
+        function initMap() {
+            var VikingCentre = new google.maps.LatLng(49.24268088, -118.0);
+
+            var myOptions = {
+                zoom: 10,
+                center: VikingCentre,
+                mapTypeId: google.maps.MapTypeId.TERRAIN
+
+            }
+
+            var map = new google.maps.Map(document.getElementById("map"), myOptions);
+
+            var VikingCentermarker = new google.maps.Marker({
+                position: VikingCentre,
+                map: map,
+                title: "Viking Center",
+                icon: "images/Cabin24.png"
+            });
+
+            var VikingCenterString = '<div id="content">' +
+                '<div id="siteNotice">' +
+                '</div>' +
+                '<h1 id="firstHeading" class="firstHeading">Viking Center</h1>' +
+                '<div id="bodyContent">' +
+                '<p>' +
+                '<img src="images/viking.jpg" alt="photo" width="170" height="127" />' +
+                '</p>' +
+                '</div>' +
+                '</div>';
+
+
+            var VikingInfoWindow = new google.maps.InfoWindow({
+                content: VikingCenterString
+            });
+
+            google.maps.event.addListener(VikingCentermarker, 'click', function () {
+                VikingInfoWindow.open(map, VikingCentermarker);
+            });
+
+            var trails = "http://www.sgrc.selkirk.ca/labs/GIS325/Trails1.kmz"
+            var kmlLayer = new google.maps.KmlLayer(trails, {
+                suppressInfoWindows: false,
+                preserveViewport: false,
+                map: map
+            });
+        }
+    </script>
+</body>
+
+</html>
